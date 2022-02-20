@@ -1,9 +1,14 @@
 import discord
 from discord.ext import commands
-from pathlib import Path
 from instagrapi import Client
+import os
 
-DiscordToken = "redacted"
+FolderToClear = "photos"
+for filename in os.listdir(FolderToClear):
+    file_path = os.path.join(FolderToClear, filename)
+    os.remove(file_path)
+
+DiscordToken = "REDACTED"
 Intents = discord.Intents(messages=True, members=True, guilds=True)
 DiscordClient = commands.Bot(command_prefix="~", intents=Intents)
 DiscordClient.remove_command('help')
@@ -28,7 +33,7 @@ async def post(Ctx, *, Caption: str):
         await Message.edit(content = MessageContent)
         try:
             InstagramClient = Client()
-            InstagramClient.login("blancheofsaintandre", "redacted")
+            InstagramClient.login("blancheofsaintandre", "REDACTED")
             MessageContent = MessageContent + "\n✅ Logged into Instagram!"
             await Message.edit(content = MessageContent)
         except Exception as e:
@@ -67,8 +72,5 @@ async def post(Ctx, *, Caption: str):
     else:
         Message = await Ctx.reply(":x: Not authorized!")
     
-
-
-#InstagramClient.photo_upload(phot_path , "hello this is a test from instagrapi")
 
 DiscordClient.run(DiscordToken)
